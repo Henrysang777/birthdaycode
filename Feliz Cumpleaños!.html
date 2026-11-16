@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>¡Feliz Cumpleaños!</title>
+<style>
+:root{color-scheme:dark;--bg1:#07030f;--bg2:#1a0838;--ink:#f6e8ff;--card:#ffffff14;--accent:#ff3d9a;--accent2:#8b5cf6;--shadow:#000a;
+--foto: url("img.png/foto.jpeg");
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Trebuchet MS",system-ui,sans-serif;color:var(--ink);background:linear-gradient(160deg,var(--bg1),var(--bg2));overflow-x:hidden;text-align:center}
+canvas{position:fixed;inset:0;pointer-events:none;z-index:50}
+section{padding:40px 18px;max-width:760px;margin:auto}
+h1{font-family:Georgia,serif;font-size:clamp(2.2rem,9vw,4.2rem);margin:.2em 0;background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;animation:pulse 2s infinite;filter:drop-shadow(0 0 14px var(--accent))}
+@keyframes pulse{50%{transform:scale(1.04)}}
+h2{font-family:Georgia,serif;margin:0 0 14px}
+input[type=text]{padding:10px 16px;border-radius:99px;border:2px solid var(--accent);background:var(--card);color:var(--ink);font-size:1rem;text-align:center;width:min(100%,280px)}
+button,.btn{cursor:pointer;border:0;border-radius:99px;padding:12px 22px;font-size:1rem;font-weight:700;color:#fff;background:linear-gradient(90deg,var(--accent),var(--accent2));box-shadow:0 6px 16px var(--shadow);transition:transform .15s}
+button:hover,.btn:hover{transform:scale(1.07)}
+.sky{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1}
+.balloon{position:absolute;bottom:-120px;width:56px;height:70px;border-radius:50% 50% 48% 48%;pointer-events:auto;cursor:pointer;animation:rise linear forwards}
+.balloon:after{content:"";position:absolute;left:50%;top:100%;width:2px;height:40px;background:#8886}
+@keyframes rise{to{transform:translateY(-120vh) translateX(var(--dx))}}
+main,section{position:relative;z-index:2}
+.cake{position:relative;width:220px;margin:30px auto 10px;user-select:none}
+.candles{display:flex;justify-content:center;gap:22px;height:56px;align-items:flex-end}
+.candle{width:12px;height:36px;background:repeating-linear-gradient(180deg,#fff 0 6px,#ff8ac2 6px 12px);border-radius:3px;position:relative}
+.flame{position:absolute;left:50%;top:-20px;width:14px;height:20px;margin-left:-7px;background:radial-gradient(#fff6a0,#ffb000 60%,transparent 70%);border-radius:50% 50% 50% 50%/60% 60% 40% 40%;animation:flick .3s infinite alternate;transition:opacity .4s}
+.off .flame{opacity:0;animation:none}
+@keyframes flick{to{transform:scale(1.15) rotate(5deg)}}
+.tier{height:46px;border-radius:12px;margin:0 auto;box-shadow:0 5px 0 #0002}
+.t1{width:150px;background:#ff8ac2}.t2{width:220px;background:#ffd1e8;position:relative}
+.t2:before{content:"";position:absolute;top:0;left:0;right:0;height:16px;border-radius:12px 12px 40% 40%;background:#fff}
+.hint{opacity:.8;font-size:.95rem}
+.gift{font-size:6rem;cursor:pointer;display:inline-block;animation:bounce 1.2s infinite;user-select:none}
+.gift.open{animation:none;transform:scale(.7) rotate(-8deg);opacity:.5}
+@keyframes bounce{50%{transform:translateY(-14px) rotate(4deg)}}
+.photo{margin:20px auto 0;max-width:280px;background:#1d0e30;border:2px solid var(--accent);padding:12px 12px 44px;border-radius:6px;box-shadow:0 0 30px var(--accent);box-shadow:0 14px 34px var(--shadow);transform:scale(0) rotate(-20deg);transition:transform .8s cubic-bezier(.2,1.5,.4,1);position:relative}
+.photo.show{transform:scale(1) rotate(-3deg)}
+.photo .frame{position:relative;aspect-ratio:1;background:#2d1450;display:grid;place-items:center;font-size:4rem;overflow:hidden}
+.photo .frame::before{content:"📷"}
+.photo .frame::after{content:"";position:absolute;inset:0;background:var(--foto) center/cover no-repeat}
+.photo b{position:absolute;bottom:10px;left:0;right:0;font-family:Georgia,serif;color:var(--ink);font-size:1.2rem}
+.up{margin-top:20px;display:none}
+.up.show{display:block}
+.wishes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.w{perspective:700px;height:130px;cursor:pointer}
+.w div{position:relative;width:100%;height:100%;transition:transform .6s;transform-style:preserve-3d}
+.w.flip div{transform:rotateY(180deg)}
+.w span{position:absolute;inset:0;display:grid;place-items:center;padding:12px;border-radius:18px;backface-visibility:hidden;background:var(--card);box-shadow:0 6px 16px var(--shadow);font-size:1rem}
+.w span:first-child{font-size:2.4rem}
+.w span:last-child{transform:rotateY(180deg);background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:700}
+footer{padding:30px;opacity:.8}
+</style>
+</head>
+<body>
+<canvas id="cv"></canvas>
+<div class="sky" id="sky"></div>
+
+<main>
+<section>
+  <div style="font-size:3rem">🎉♏♏🎉</div>
+  <h1 id="title">¡Feliz Cumpleaños!</h1>
+  <p><input type="text" id="name" placeholder="Escribe su nombre aquí" maxlength="30"></p>
+  <p class="hint">Toca los globos para reventarlos 🎈</p>
+  <button id="party">¡Lanzar confeti! 🎊</button>
+</section>
+
+<section>
+  <h2>Pide un deseo y sopla las velas 🕯️</h2>
+  <div class="cake" id="cake">
+    <div class="candles"><div class="candle"><i class="flame"></i></div><div class="candle"><i class="flame"></i></div><div class="candle"><i class="flame"></i></div></div>
+    <div class="tier t1"></div><div class="tier t2"></div>
+  </div>
+  <p class="hint" id="cakeHint">Toca el pastel para soplar 💨</p>
+  <button id="relight" style="display:none">Encender de nuevo 🔥</button>
+</section>
+
+<section>
+  <h2>Tienes un regalo sorpresa 🎁</h2>
+  <div class="gift" id="gift">🎁</div>
+  <p class="hint" id="giftHint">¡Ábrelo!</p>
+  <div class="photo" id="photo"><div class="frame" id="frame" role="img" aria-label="Foto de la cumpleañera"></div><b id="cap">Nuestra cumpleañera</b></div>
+  <div class="up" id="up">
+    <label class="btn" for="file">📸 Elegir su foto</label>
+    <input type="file" id="file" accept="image/*" hidden>
+  </div>
+</section>
+
+<section>
+  <h2>Mensajes para ti 💌</h2>
+  <p class="hint">Toca cada tarjeta para descubrirla</p>
+  <div class="wishes">
+    <div class="w"><div><span>💖</span><span>Que tu sonrisa ilumine cada día.</span></div></div>
+    <div class="w"><div><span>🌟</span><span>Que todos tus sueños se cumplan.</span></div></div>
+    <div class="w"><div><span>🍀</span><span>Un año lleno de suerte y aventuras.</span></div></div>
+    <div class="w"><div><span>🥳</span><span>¡Hoy el mundo celebra que existes!</span></div></div>
+  </div>
+</section>
+<footer>Hecho con mucho aprecio de Henry</footer>
+</main>
+
+<script>
+const cv=document.getElementById('cv'),cx=cv.getContext('2d');let P=[];
+function size(){cv.width=innerWidth;cv.height=innerHeight}size();addEventListener('resize',size);
+const COL=['#ff4f9a','#7c4dff','#ffd23f','#3ddc97','#4cc9f0','#ff8a3d'];
+function burst(x,y,n=60){for(let i=0;i<n;i++){const a=Math.random()*6.28,s=3+Math.random()*7;P.push({x,y,vx:Math.cos(a)*s,vy:Math.sin(a)*s-4,r:4+Math.random()*5,c:COL[i%6],l:90+Math.random()*40,rot:Math.random()*6})}}
+function rain(){for(let i=0;i<8;i++)setTimeout(()=>burst(Math.random()*cv.width,cv.height*.3*Math.random()+20,40),i*150)}
+(function loop(){cx.clearRect(0,0,cv.width,cv.height);P=P.filter(p=>p.l>0);for(const p of P){p.x+=p.vx;p.y+=p.vy;p.vy+=.25;p.vx*=.99;p.l--;p.rot+=.2;cx.save();cx.globalAlpha=Math.min(1,p.l/30);cx.translate(p.x,p.y);cx.rotate(p.rot);cx.fillStyle=p.c;cx.fillRect(-p.r/2,-p.r,p.r,p.r*2);cx.restore()}requestAnimationFrame(loop)})();
+
+const sky=document.getElementById('sky');
+function balloon(){const b=document.createElement('div');b.className='balloon';const c=COL[Math.floor(Math.random()*6)];b.style.cssText+=`left:${Math.random()*92}%;background:radial-gradient(circle at 30% 30%,#fff9,${c} 50%);--dx:${(Math.random()*80-40)}px;animation-duration:${8+Math.random()*7}s`;
+b.onclick=e=>{burst(e.clientX,e.clientY,30);b.remove()};b.addEventListener('animationend',()=>b.remove());sky.appendChild(b)}
+for(let i=0;i<6;i++)setTimeout(balloon,i*500);setInterval(()=>{if(sky.children.length<14)balloon()},1200);
+
+document.getElementById('party').onclick=rain;
+const nm=document.getElementById('name'),ti=document.getElementById('title'),cap=document.getElementById('cap');
+nm.oninput=()=>{const v=nm.value.trim();ti.textContent=v?`¡Feliz Cumpleaños, ${v}!`:'¡Feliz Cumpleaños!';cap.textContent=v||'Nuestra cumpleañera'};
+
+const cake=document.getElementById('cake'),rl=document.getElementById('relight'),ch=document.getElementById('cakeHint');
+cake.onclick=()=>{if(cake.classList.contains('off'))return;cake.classList.add('off');rain();ch.textContent='¡Se cumplirá tu deseo! ✨';rl.style.display='inline-block'};
+rl.onclick=()=>{cake.classList.remove('off');ch.textContent='Toca el pastel para soplar 💨';rl.style.display='none'};
+
+const gift=document.getElementById('gift'),photo=document.getElementById('photo'),up=document.getElementById('up');
+gift.onclick=()=>{if(gift.classList.contains('open'))return;gift.classList.add('open');document.getElementById('giftHint').textContent='¡Sorpresa! 🎉';
+const r=gift.getBoundingClientRect();burst(r.left+r.width/2,r.top,80);photo.classList.add('show');up.classList.add('show')};
+document.getElementById('file').onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+rd.onload=()=>{document.getElementById('frame').style.setProperty('--foto','url('+rd.result+')');rain()};rd.readAsDataURL(f)};
+
+document.querySelectorAll('.w').forEach(w=>w.onclick=()=>w.classList.toggle('flip'));
+document.addEventListener('click',e=>{if(e.target.closest('button,.balloon,label,input'))return;burst(e.clientX,e.clientY,14)});
+</script>
+</body>
+</html>
